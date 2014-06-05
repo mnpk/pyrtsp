@@ -1,6 +1,7 @@
 # Simple RTSP Client #
 
-Simple python rtsp client.
+Simple python rtsp client.(inspired by [requests](https://github.com/kennethreitz/requests))
+
 It's simple like,
 
     >>> r = rtsp.describe("rtsp://172.16.41.59:80/test.mpg")
