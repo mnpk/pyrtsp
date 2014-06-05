@@ -16,18 +16,19 @@ class Request:
 		return string
 
 class Response:
-	def __init__(self, lines=[]):
-		if not lines:
+	def __init__(self, header, body):
+		if not header or not body:
 			return
-		self.status_line = lines[0]
-		self.rtsp_version, self.status_code, self.reason = self.status_line.split(' ', 3)
-		# self.method = lines[0].split()[0]
+		self.status_line = header.split('\r\n')[0]
+		self.rtsp_version, status_code, self.reason = self.status_line.split(' ', 2)
+		self.status_code = int(status_code)
 		headers = {}
-		for line in lines[1:]:
+		for line in header.split('\r\n')[1:]:
 			if ':' in line:
 				key, value = line.split(':', 1)
 				headers[key] = value.strip()
 		self.headers = CaseInsensitiveDict(headers)
+		self.content = body
 	def is_redirect(self):
 		if self.status_code == 301:
 			return True
@@ -45,7 +46,7 @@ class Session:
 		self.view = MessageView()
 		self.cseq = 0
 		pass
-	def request(self, method, url, headers={}, auto_redirect=True, verbose=True):
+	def request(self, method, url, headers={}, auto_redirect=True, verbose=False):
 		try:
 			self.s.connect((urlparse(url).hostname, urlparse(url).port));
 			# print "connected to", urlparse(url).hostname, ":", urlparse(url).port
@@ -57,7 +58,8 @@ class Session:
 		msg = Request(method, url, headers).string()
 		self.s.send(msg)
 		if verbose: self.view.send(msg)
-		lines = []
+		header = ''
+		body = ''
 		while True:
 			try:
 				data = self.s.recv(1024)
@@ -66,9 +68,8 @@ class Session:
 				break
 			if not data: break
 			if verbose: self.view.recv(data)
-			for line in data.split('\r\n'):
-				lines.append(line)
-		r = Response(lines)
+			header, body = data.split('\r\n\r\n', 1)
+		r = Response(header, body)
 		if auto_redirect and r.is_redirect():
 			self.s.close()
 			self.__init__()
