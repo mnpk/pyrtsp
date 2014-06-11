@@ -1,7 +1,8 @@
 import termcolor
 
 def chunk_string(string, length):
-	return [string[0+i:length+i] for i in range(0, len(string), length)]
+	size = max(len(string), 1)
+	return [string[0+i:length+i] for i in range(0, size, length)]
 
 class MessageView:
 	def __init__(self, msg_width = 55, view_width = 80, send_color = 'green', recv_color = 'cyan'):

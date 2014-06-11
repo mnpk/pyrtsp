@@ -6,7 +6,7 @@ Simple rtsp client, inspired by [requests](https://github.com/kennethreitz/reque
 
 It's simple like,
 
-    >>> r = rtsp.describe("rtsp://172.16.41.59:80/test.mpg")
+    >>> r = rtsplib.describe("rtsp://172.16.41.59:80/test.mpg")
     >>> r.status_code
     200
     >>> r.headers["content-type"]
