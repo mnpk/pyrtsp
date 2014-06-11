@@ -1,7 +1,7 @@
 from session import Session
 
-def request(method, url, **kwargs):
-	s = Session()
+def request(method, url, verbose=False, **kwargs):
+	s = Session(verbose=verbose)
 	return s.request(method, url, **kwargs)
 
 def describe(url, **kwargs):

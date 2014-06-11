@@ -44,11 +44,23 @@ class Response:
 
 
 class Session:
-	def __init__(self):
+	def __init__(self, verbose=False):
 		self.view = MessageView()
+		self.verbose = verbose
+		self.init_socket()
+
+	def init_socket(self):
 		self.cseq = 0
 		self.s = None
 		self.session = None
+
+	def sendlog(self, msg):
+		if self.verbose:
+			self.view.send(msg)
+
+	def recvlog(self, msg):
+		if self.verbose:
+			self.view.recv(msg)
 
 	def connect(self, url):
 		if self.s:
@@ -63,7 +75,7 @@ class Session:
 			return False
 		return True
 
-	def request(self, method, url, headers={}, auto_redirect=True, verbose=False, contents=''):
+	def request(self, method, url, headers={}, auto_redirect=True, contents=''):
 		self.connect(url)
 		headers['CSeq'] = self.cseq
 		self.cseq += 1
@@ -71,25 +83,24 @@ class Session:
 			headers['Session'] = self.session.split(';')[0]
 		msg = Request(method, url, headers, contents).string()
 		self.s.sendall(msg)
-		if verbose: self.view.send(msg)
+		self.sendlog(msg)
 		data = ''
 		try:
 			data_chunk = self.s.recv(2048)
 			data += data_chunk
 		except socket.error, e:
-			print e 
+			print e
 		if not data_chunk:
-			if verbose: self.view.recv('no data received')
-		if verbose: self.view.recv(data)
+			self.recvlog('no data received')
+		self.recvlog(data)
 		if not data:
 			return None
 		response_header, response_body = data.split('\r\n\r\n', 1)
 		r = Response(response_header, response_body)
 		if auto_redirect and r.is_redirect():
-			if verbose: self.view.send('auto redirecting')
 			self.s.close()
-			self.__init__()
-			return self.request(method, r.headers['location'], headers=headers, verbose=verbose)
+			self.init_socket()
+			return self.request(method, r.headers['location'], headers=headers)
 		if 'session' in r.headers:
 			self.session = r.headers['session']
 		return r
