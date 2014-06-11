@@ -1,6 +1,8 @@
-# Simple RTSP Client #
+# rtsplib
 
-Simple python rtsp client.(inspired by [requests](https://github.com/kennethreitz/requests))
+rtsp for humans.
+
+Simple rtsp client, inspired by [requests](https://github.com/kennethreitz/requests)
 
 It's simple like,
 
@@ -14,11 +16,16 @@ It's simple like,
 
 ## Features
 
-- Support RTSP Describe, Setup and Get_parameter
-- Support Session
+- Support RTSP methods including Describe, Setup and Get_parameter
+- Support Session with keep-alive socket
 - Support verbose mode with SMS-like text UI
 ![rtsp_verbose.png](https://bitbucket.org/repo/bAakbo/images/1912345104-rtsp_verbose.png)
 
 ## Installation
 
-no install script yet
+soon
+
+
+
+
+
