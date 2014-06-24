@@ -21,7 +21,6 @@ It's simple like,
 - Support RTSP methods including Describe, Setup and Get_parameter
 - Support Session with keep-alive socket
 - Support verbose mode with SMS-like text UI
-![rtsp_verbose.png](https://bitbucket.org/repo/bAakbo/images/1912345104-rtsp_verbose.png)
 
 ## Installation
 
