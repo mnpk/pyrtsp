@@ -1,13 +1,13 @@
-# rtsplib
+# pyrtsp
 
-rtsp for humans.
+python rtsp for humans.
 
 Simple rtsp client, inspired by [requests](https://github.com/kennethreitz/requests)
 
 It's simple like,
 
 ```python
->>> r = rtsplib.describe("rtsp://172.16.41.59:80/test.mpg")
+>>> r = pyrtsp.describe("rtsp://172.16.41.59:80/test.mpg")
 >>> r.status_code
 200
 >>> r.headers["content-type"]
@@ -18,7 +18,7 @@ It's simple like,
 
 and, has a verbose mode.
 ```python
->>> rtsplib.describe("rtsp://172.16.41.59:80/1_vod.mpg", verbose=True)
+>>> pyrtsp.describe("rtsp://172.16.41.59:80/1_vod.mpg", verbose=True)
                                ----------------------------------------------------
                               | DESCRIBE rtsp://172.16.41.59:80/1_vod.mpg RTSP/1.0 |
                               |                                            CSeq: 0 |
