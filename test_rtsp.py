@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-import rtsplib
+import pyrtsp
 import unittest
 import time
 
